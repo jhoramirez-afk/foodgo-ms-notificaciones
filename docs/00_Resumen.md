@@ -25,10 +25,10 @@ RF-06 (notificar estados del pedido), diseño serverless y desacoplado (consumid
 | Framework | Spring Boot 3.3 |
 | Lenguaje | Java 21 |
 | Build | Maven |
-| Persistencia | Spring Data JPA + H2 (in-memory) |
+| Persistencia | Spring Data JPA + H2 de pruebas y MySQL para la demostración relacional |
 | Validación | Bean Validation (`jakarta.validation`) |
 | API/Docs | springdoc-openapi — Swagger UI + OpenAPI yaml + ReDoc |
-| Calidad | JaCoCo (cobertura LINE 100%) + Cucumber (BDD REST) |
+| Calidad | JaCoCo (umbral mínimo LINE 80%) + Cucumber (BDD REST) |
 | Contenedores | Docker + Docker Compose |
 
 ## Entradas disponibles desde la web (`/`)

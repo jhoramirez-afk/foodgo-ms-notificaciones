@@ -29,9 +29,9 @@ class NotificacionServiceTest {
     private Notificacion recurso() {
         Notificacion r = new Notificacion();
         r.setId(1L);
-        r.setDestinatario("Demo");
-        r.setCanal("valor");
-        r.setMensaje("Demo");
+        r.setDestinatario("camila.soto@example.com");
+        r.setCanal("EMAIL");
+        r.setMensaje("camila.soto@example.com");
         return r;
     }
 
@@ -56,18 +56,18 @@ class NotificacionServiceTest {
     @Test
     void crearGuarda() {
         when(repository.save(any())).thenReturn(recurso());
-        assertThat(service.create(recurso()).getDestinatario()).isEqualTo("Demo");
+        assertThat(service.create(recurso()).getDestinatario()).isEqualTo("camila.soto@example.com");
     }
 
     @Test
     void actualizarExistente() {
         Notificacion datos = recurso();
-        datos.setDestinatario("Actualizado");
+        datos.setDestinatario("camila.actualizada@example.com");
         when(repository.findById(1L)).thenReturn(Optional.of(recurso()));
         when(repository.save(any())).thenAnswer(inv -> inv.getArgument(0));
         Optional<Notificacion> resultado = service.update(1L, datos);
         assertThat(resultado).isPresent();
-        assertThat(resultado.get().getDestinatario()).isEqualTo("Actualizado");
+        assertThat(resultado.get().getDestinatario()).isEqualTo("camila.actualizada@example.com");
     }
 
     @Test

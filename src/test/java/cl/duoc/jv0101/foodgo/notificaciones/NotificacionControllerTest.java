@@ -40,9 +40,9 @@ class NotificacionControllerTest {
     private Notificacion recurso(Long id) {
         Notificacion r = new Notificacion();
         r.setId(id);
-        r.setDestinatario("Demo");
-        r.setCanal("valor");
-        r.setMensaje("Demo");
+        r.setDestinatario("camila.soto@example.com");
+        r.setCanal("EMAIL");
+        r.setMensaje("camila.soto@example.com");
         return r;
     }
 
@@ -64,7 +64,7 @@ class NotificacionControllerTest {
         when(service.findById(1L)).thenReturn(Optional.of(recurso(1L)));
         mockMvc.perform(get("/api/notificaciones/1"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.destinatario").value("Demo"));
+            .andExpect(jsonPath("$.destinatario").value("camila.soto@example.com"));
     }
 
     @Test
@@ -94,7 +94,7 @@ class NotificacionControllerTest {
     @Test
     void actualizarExistenteDevuelve200() throws Exception {
         Notificacion actualizado = recurso(1L);
-        actualizado.setDestinatario("Actualizado");
+        actualizado.setDestinatario("camila.actualizada@example.com");
         when(service.update(any(), any())).thenReturn(Optional.of(actualizado));
         mockMvc.perform(put("/api/notificaciones/1")
                 .contentType(MediaType.APPLICATION_JSON)
