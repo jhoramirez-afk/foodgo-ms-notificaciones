@@ -1,48 +1,40 @@
-# Notificacion — Contrato de la API REST
+# API REST: notificaciones
 
-## Base
+Base local: http://localhost:8086/api. Swagger UI: http://localhost:8086/swagger-ui/index.html.
 
-- **Base path**: `/api/notificaciones`
-- **Formato**: JSON — **Puerto**: 8086 (configurable con `PORT`)
+| Método | Ruta | HTTP de éxito |
+|---|---|---:|
+| POST | /notificaciones | 201 |
+| GET | /notificaciones | 200 |
+| GET | /notificaciones/{id} | 200 |
+| PUT | /notificaciones/{id} | 200 |
+| DELETE | /notificaciones/{id} | 204 |
+| POST | /notificaciones/{id}/intentos | 201 |
+| GET | /notificaciones/{id}/intentos | 200 |
+| GET | /intentos/{id} | 200 |
+| PUT | /intentos/{id} | 200 |
+| DELETE | /intentos/{id} | 204 |
 
-## Recursos
+## Crear entidad principal
 
-| Método | Ruta | Códigos de estado | Descripción |
-|--------|------|-------------------|-------------|
-| GET | `/api/notificaciones` | 200 | Lista todos los recursos |
-| GET | `/api/notificaciones/{id}` | 200 / 404 | Obtiene un recurso por id |
-| POST | `/api/notificaciones` | 201 / 400 | Crea un recurso |
-| PUT | `/api/notificaciones/{id}` | 200 / 404 / 400 | Actualiza un recurso |
-| DELETE | `/api/notificaciones/{id}` | 204 / 404 | Elimina un recurso |
-
-## Atributos de un recurso
-
-| Campo | Tipo | Obligatorio | Descripción |
-|-------|------|-------------|-------------|
-| id | Long | - | Identificador autogenerado |
-| destinatario | String | Sí | Campo principal del recurso |
-| canal | String | No | Campo del dominio |
-| mensaje | String | No | Campo del dominio |
-
-## Ejemplos con curl
-
-```bash
-# Listar
-curl http://localhost:8086/api/notificaciones
-
-# Crear
-curl -X POST http://localhost:8086/api/notificaciones \
-  -H "Content-Type: application/json" \
-  -d '{"destinatario":"Demo"}'
-
-# Obtener por id
-curl http://localhost:8086/api/notificaciones/1
-
-# Actualizar
-curl -X PUT http://localhost:8086/api/notificaciones/1 \
-  -H "Content-Type: application/json" \
-  -d '{"destinatario":"Actualizado"}'
-
-# Eliminar
-curl -X DELETE http://localhost:8086/api/notificaciones/1
+```json
+{
+  "destinatario": "camila.soto.DEMO@example.com",
+  "canal": "EMAIL",
+  "mensaje": "Camila, recibimos tu pedido de dos hamburguesas en La Cocina de Barrio. Total: $19.980 CLP."
+}
 ```
+
+## Crear entidad relacionada
+
+```json
+{
+  "resultado": "ENVIADO",
+  "fechaHora": "2026-10-01T13:30:00",
+  "detalle": "Registro académico de entrega del aviso de confirmación."
+}
+```
+
+Usar el ID retornado por la creación del padre. Los ID son generados por la BD. Editar los hijos mediante sus propias rutas. Ver las reglas y los campos calculados en REGLAS_EP02.md.
+
+Errores: 400 para datos o JSON inválidos; 404 para recurso/relación local inexistente; 409 para conflictos de integridad o unicidad cuando corresponda. Un campo demasiado largo devuelve 400. Los mensajes y validationErrors se entregan mediante ApiExceptionHandler.

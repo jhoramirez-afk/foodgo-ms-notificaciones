@@ -1,5 +1,9 @@
 package cl.duoc.jv0101.foodgo.notificaciones.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
@@ -12,7 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 
@@ -24,12 +27,17 @@ public class Notificacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El destinatario es obligatorio")
+    @NotBlank(message = "Destinatario es obligatorio")
+    @Size(max = 255, message = "El campo admite hasta 255 caracteres")
     @Column(nullable = false)
     private String destinatario;
-    @Column
+    @NotBlank(message = "Canal es obligatorio")
+    @Pattern(regexp = "EMAIL|SMS", message = "Canal debe ser EMAIL, SMS")
+    @Column(nullable = false)
     private String canal;
-    @Column
+    @NotBlank(message = "Mensaje es obligatorio")
+    @Size(max = 255, message = "El campo admite hasta 255 caracteres")
+    @Column(nullable = false)
     private String mensaje;
 
     @Valid
