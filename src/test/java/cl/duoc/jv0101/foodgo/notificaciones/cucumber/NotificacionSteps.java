@@ -33,10 +33,10 @@ public class NotificacionSteps {
         return "http://localhost:" + port + "/api/notificaciones";
     }
 
-    private HttpEntity<Map<String, String>> body(String valor) {
+    private HttpEntity<Map<String, Object>> body(String valor) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(Map.of("destinatario", valor), headers);
+        return new HttpEntity<>(Map.of("destinatario", valor, "canal", "EMAIL", "mensaje", "Camila, recibimos tu pedido de dos hamburguesas en La Cocina de Barrio. Total: $19.980 CLP."), headers);
     }
 
     @Given("el servicio {string} está disponible")
