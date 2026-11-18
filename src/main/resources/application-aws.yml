@@ -1,0 +1,6 @@
+# Activar junto a postgres,eureka,cloud en el despliegue del Learner Lab.
+foodgo:
+  cola:
+    habilitada: true
+    region: ${AWS_REGION:us-east-1}
+    url: ${SQS_QUEUE_URL}

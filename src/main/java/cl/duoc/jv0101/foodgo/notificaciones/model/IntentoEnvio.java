@@ -16,15 +16,26 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "intentos_envio")
+@Table(name = "intentos_envio", uniqueConstraints = @UniqueConstraint(
+        name = "uk_intento_notificacion_evento", columnNames = {"notificacion_id", "evento_id"}))
 public class IntentoEnvio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Pattern(regexp = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+            message = "Evento debe ser un UUID canonico")
+    @Column(name = "evento_id", length = 36)
+    private String eventoId;
+
+    public String getEventoId() { return eventoId; }
+
+    public void setEventoId(String eventoId) { this.eventoId = eventoId; }
 
     @NotBlank(message = "Resultado es obligatorio")
     @Pattern(regexp = "ENVIADO|FALLIDO", message = "Resultado debe ser ENVIADO, FALLIDO")
