@@ -36,8 +36,15 @@ public class IntentoEnvioService {
     }
 
     public IntentoEnvio create(Long notificacionId, IntentoEnvio recurso) {
-        Notificacion notificacion = notificacionRepository.findById(notificacionId)
+        // Serializa entregas repetidas del mismo evento, incluso entre replicas del servicio.
+        Notificacion notificacion = (recurso.getEventoId() == null
+                ? notificacionRepository.findById(notificacionId)
+                : notificacionRepository.findForUpdate(notificacionId))
                 .orElseThrow(() -> new ResourceNotFoundException("Notificacion no encontrado con id " + notificacionId));
+        if (recurso.getEventoId() != null) {
+            var existente = repository.findByNotificacion_IdAndEventoId(notificacionId, recurso.getEventoId());
+            if (existente.isPresent()) return existente.get();
+        }
         recurso.setId(null);
         recurso.setNotificacion(notificacion);
         return repository.save(recurso);

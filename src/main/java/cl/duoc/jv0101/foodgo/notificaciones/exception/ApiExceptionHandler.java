@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    @ExceptionHandler(ColaNoDisponibleException.class)
+    public ResponseEntity<ApiError> queueUnavailable(ColaNoDisponibleException ex, HttpServletRequest request) {
+        return build(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage(), request, Map.of());
+    }
+
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<ApiError> businessRule(BusinessRuleException ex, HttpServletRequest request) {
         return build(HttpStatus.BAD_REQUEST, "Solicitud inválida", request, Map.of(ex.getField(), ex.getMessage()));
